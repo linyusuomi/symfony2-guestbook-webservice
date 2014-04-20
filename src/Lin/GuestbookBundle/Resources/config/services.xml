@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+
+    <parameters>
+        <parameter key="lin_guestbook.guest.handler.class">Lin\GuestbookBundle\Handler\GuestHandler</parameter>
+        <parameter key="lin_guestbook.guest.class">Lin\GuestbookBundle\Entity\Guest</parameter>
+    </parameters>
+
+    <services>
+        <service id="lin_guestbook.guest.handler" class="%lin_guestbook.guest.handler.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%lin_guestbook.guest.class%</argument>
+            <argument type="service" id="form.factory"></argument>
+        </service>
+    </services>
+
+</container>

@@ -18,6 +18,12 @@ acme_blogs:
     prefix: /api
     resource: "@AcmeBlogBundle/Resources/config/routes.yml"
 
+lin_guestbook:
+    type: rest
+    prefix: /guest
+    resource: "@LinGuestbookBundle/Resources/config/routes.yml"
+
+
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc

@@ -1,0 +1,18 @@
+{% block content %}
+    <h1 class="title">{{ 'guest.list'|trans({}, 'LinGuestbookBundle') }}</h1>
+
+    <ul id="page-list">
+        {% for guest in guests %}
+            <li>
+                <a href="{{ path('api_1_get_guest', {'id': guest.id}) }}">{{ guest.title }}</a>
+                {#[<a href="{{ path('api_1_edit_pages', {'id': page.id}) }}">{{ 'page.edit.link'|trans({}, 'AcmeBlogBundle') }}</a>]#}
+                {#[<a href="{{ path('api_1_remove_pages', {'id': page.id}) }}">{{ 'page.remove.link'|trans({}, 'AcmeBlogBundle') }}</a>]#}
+            </li>
+        {% else %}
+            <li>{{ 'guest.list.empty'|trans({}, 'LinGuestbookBundle') }}</li>
+        {% endfor %}
+    </ul>
+    <p>
+        <a href="{{ path('api_1_new_guest') }}">{{ 'guest.new.link'|trans({}, 'LinGuestbookBundle') }}</a>
+    </p>
+{% endblock %}
