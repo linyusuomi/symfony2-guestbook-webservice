@@ -1,5 +1,5 @@
 lin_guestbook_guest:
     type: rest
-    prefix: /test
+    prefix: /v1
     resource: Lin\GuestbookBundle\Controller\IndexController
     name_prefix:  api_1_ # naming collision

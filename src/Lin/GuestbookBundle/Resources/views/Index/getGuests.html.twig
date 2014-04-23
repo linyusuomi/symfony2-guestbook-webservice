@@ -4,7 +4,10 @@
     <ul id="page-list">
         {% for guest in guests %}
             <li>
-                <a href="{{ path('api_1_get_guest', {'id': guest.id}) }}">{{ guest.title }}</a>
+
+                <img src="{{ app.request.getBaseURL() }}/uploads/{{ guest.path }}" alt="Smiley face" height="70" width="70">
+                {{ guest.name }}
+                <a href="{{ path('api_1_get_guest', {'id': guest.id}) }}">{{ guest.phone }}</a>
                 {#[<a href="{{ path('api_1_edit_pages', {'id': page.id}) }}">{{ 'page.edit.link'|trans({}, 'AcmeBlogBundle') }}</a>]#}
                 {#[<a href="{{ path('api_1_remove_pages', {'id': page.id}) }}">{{ 'page.remove.link'|trans({}, 'AcmeBlogBundle') }}</a>]#}
             </li>

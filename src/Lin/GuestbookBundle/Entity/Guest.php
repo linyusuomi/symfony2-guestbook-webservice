@@ -3,7 +3,6 @@
 namespace Lin\GuestbookBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Lin\GuestbookBundle\Model\GuestInterface;
 
 /**
  * Guest
@@ -11,7 +10,7 @@ use Lin\GuestbookBundle\Model\GuestInterface;
  * @ORM\Table()
  * @ORM\Entity()
  */
-class Guest implements GuestInterface
+class Guest
 {
     /**
      * @var integer
@@ -24,16 +23,30 @@ class Guest implements GuestInterface
 
     /**
      * @var string
-     * @ORM\Column(name="title", type="string", length=255, nullable=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
-    private $title;
+    private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="body", type="text")
+     * @ORM\Column(name="phone", type="text")
      */
-    private $body;
+    private $phone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="path", type="text")
+     */
+    private $path;
+
+
+    /**
+     * @var \File(maxSize="600000000")
+     *
+     */
+    private $image;
 
 
     /**
@@ -47,48 +60,147 @@ class Guest implements GuestInterface
     }
 
     /**
-     * Set title
+     * Set name
      *
-     * @param string $title
+     * @param string $name
      * @return Guest
      */
-    public function setTitle($title)
+    public function setName($name)
     {
-        $this->title = $title;
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     * @return Guest
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
     
         return $this;
     }
 
     /**
-     * Get title
+     * Get phone
      *
      * @return string 
      */
-    public function getTitle()
+    public function getPhone()
     {
-        return $this->title;
+        return $this->phone;
     }
 
     /**
-     * Set body
+     * Set path
      *
-     * @param string $body
+     * @param string $path
      * @return Guest
      */
-    public function setBody($body)
+    public function setPath($path)
     {
-        $this->body = $body;
-    
+        $this->path = $path;
+
         return $this;
     }
 
     /**
-     * Get body
+     * Get path
      *
-     * @return string 
+     * @return string
      */
-    public function getBody()
+    public function getPath()
     {
-        return $this->body;
+        return $this->path;
     }
+
+    public function getAbsolutePath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadRootDir().'/'.$this->path;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadDir().'/'.$this->path;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads';
+    }
+
+    /**
+     * Set image.
+     *
+     * @param Guest $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * Get image.
+     *
+     * @return Guest
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /*
+     * handle upload file
+     */
+    public function upload()
+    {
+        // the file property can be empty if the field is not required
+        if (null === $this->getImage()) {
+            return;
+        }
+
+        // use the original file name here but you should
+        // sanitize it at least to avoid any security issues
+
+        // move takes the target directory and then the
+        // target filename to move to
+        $this->getImage()->move(
+            $this->getUploadRootDir(),
+            $this->getImage()->getClientOriginalName()
+        );
+
+        // set the path property to the filename where you've saved the file
+        $this->path = $this->getImage()->getClientOriginalName();
+
+        // clean up the file property as you won't need it anymore
+        $this->image = null;
+    }
+
 }

@@ -16,7 +16,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use Lin\GuestbookBundle\Exception\InvalidFormException;
 use Lin\GuestbookBundle\Form\GuestType;
-use Lin\GuestbookBundle\Model\GuestInterface;
+use Lin\GuestbookBundle\Entity\Guest;
 
 
 class IndexController extends FOSRestController
@@ -128,7 +128,7 @@ class IndexController extends FOSRestController
     {
         try {
             $newGuest = $this->container->get('lin_guestbook.guest.handler')->post(
-                $request->request->all()
+                $request
             );
 
             $routeOptions = array(
@@ -248,7 +248,7 @@ class IndexController extends FOSRestController
      *
      * @param mixed $id
      *
-     * @return GuestInterface
+     * @return Guest
      *
      * @throws NotFoundHttpException
      */

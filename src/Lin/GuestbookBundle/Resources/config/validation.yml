@@ -1,7 +1,7 @@
 # src/Lin/GuestbookBundle/Resources/config/validation.yml
 Lin\GuestbookBundle\Entity\Guest:
     properties:
-        title:
+        name:
             - NotBlank: ~
             - NotNull: ~
             - Length:

@@ -2,7 +2,7 @@
 
 namespace Lin\GuestbookBundle\Handler;
 
-use Lin\GuestbookBundle\Model\GuestInterface;
+use Lin\GuestbookBundle\Entity\Guest;
 
 interface GuestHandlerInterface
 {
@@ -13,7 +13,7 @@ interface GuestHandlerInterface
      *
      * @param mixed $id
      *
-     * @return GuestInterface
+     * @return Guest
      */
     public function get($id);
 
@@ -32,33 +32,33 @@ interface GuestHandlerInterface
      *
      * @api
      *
-     * @param array $parameters
+     * @param $request
      *
-     * @return GuestInterface
+     * @return Guest
      */
-    public function post(array $parameters);
+    public function post($request);
 
     /**
      * Edit a Guest.
      *
      * @api
      *
-     * @param GuestInterface   $guest
-     * @param array           $parameters
+     * @param Guest   $guest
+     * @param $request
      *
-     * @return GuestInterface
+     * @return Guest
      */
-    public function put(GuestInterface $guest, array $parameters);
+    public function put(Guest $guest, $request);
 
     /**
      * Partially update a Guest.
      *
      * @api
      *
-     * @param GuestInterface   $guest
-     * @param array           $parameters
+     * @param Guest   $guest
+     * @param $request
      *
-     * @return GuestInterface
+     * @return Guest
      */
-    public function patch(GuestInterface $guest, array $parameters);
+    public function patch(Guest $guest, $request);
 }

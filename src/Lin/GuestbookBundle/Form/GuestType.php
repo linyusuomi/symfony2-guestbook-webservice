@@ -15,8 +15,9 @@ class GuestType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('body')
+            ->add('name')
+            ->add('phone')
+            ->add('image', 'file', array('label' => 'Image', 'required' => true))
         ;
     }
     

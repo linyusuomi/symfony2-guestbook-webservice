@@ -4,7 +4,7 @@ namespace Lin\GuestbookBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
-use Lin\GuestbookBundle\Model\GuestInterface;
+use Lin\GuestbookBundle\Entity\Guest;
 use Lin\GuestbookBundle\Form\GuestType;
 use Lin\GuestbookBundle\Exception\InvalidFormException;
 
@@ -19,7 +19,7 @@ class GuestHandler implements GuestHandlerInterface
     {
         $this->om = $om;
         $this->entityClass = $entityClass;
-        $this->repository = $this->om->getRepository($this->entityClass);
+        $this->repository = $this->om->getRepository('LinGuestbookBundle:Guest');
         $this->formFactory = $formFactory;
     }
 
@@ -28,7 +28,7 @@ class GuestHandler implements GuestHandlerInterface
      *
      * @param mixed $id
      *
-     * @return GuestInterface
+     * @return Guest
      */
     public function get($id)
     {
@@ -51,64 +51,63 @@ class GuestHandler implements GuestHandlerInterface
     /**
      * Create a new Guest.
      *
-     * @param array $parameters
+     * @param $request
      *
-     * @return GuestInterface
+     * @return Guest
      */
-    public function post(array $parameters)
+    public function post($request)
     {
         $guest = $this->createGuest();
 
-        return $this->processForm($guest, $parameters, 'POST');
+        return $this->processForm($guest, $request, 'POST');
     }
 
     /**
-     * Edit a Page.
+     * Edit a Guest.
      *
-     * @param GuestInterface $guest
-     * @param array         $parameters
+     * @param Guest $guest
+     * @param $request
      *
-     * @return GuestInterface
+     * @return Guest
      */
-    public function put(GuestInterface $guest, array $parameters)
+    public function put(Guest $guest, $request)
     {
-        return $this->processForm($guest, $parameters, 'PUT');
+        return $this->processForm($guest, $request, 'PUT');
     }
 
     /**
      * Partially update a Guest.
      *
-     * @param GuestInterface $guest
-     * @param array         $parameters
+     * @param Guest $guest
+     * @param $request
      *
-     * @return GuestInterface
+     * @return Guest
      */
-    public function patch(GuestInterface $guest, array $parameters)
+    public function patch(Guest $guest, $request)
     {
-        return $this->processForm($guest, $parameters, 'PATCH');
+        return $this->processForm($guest, $request, 'PATCH');
     }
 
     /**
      * Processes the form.
      *
-     * @param GuestInterface $guest
-     * @param array         $parameters
+     * @param Guest $guest
+     * @param $request
      * @param String        $method
      *
-     * @return GuestInterface
+     * @return Guest
      *
      * @throws \Lin\GuestbookBundle\Exception\InvalidFormException
      */
-    private function processForm(GuestInterface $page, array $parameters, $method = "PUT")
+    private function processForm(Guest $guest, $request, $method = "PUT")
     {
-        $form = $this->formFactory->create(new GuestType(), $page, array('method' => $method));
-        $form->submit($parameters, 'PATCH' !== $method);
-        if ($form->isValid()) {
+        $form = $this->formFactory->create(new GuestType(), $guest, array('method' => $method));
+        $form->handleRequest($request);
 
-            $guest = $form->getData();
+        if ($form->isValid()) {
+            $guest->upload();
             $this->om->persist($guest);
             $this->om->flush($guest);
-
             return $guest;
         }
 
