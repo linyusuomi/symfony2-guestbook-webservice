@@ -17,7 +17,7 @@ class GuestType extends AbstractType
         $builder
             ->add('name')
             ->add('phone')
-            ->add('image', 'file', array('label' => 'Image', 'required' => true))
+            ->add('image', 'file', array('label' => 'Image','required' => false))
         ;
     }
     
@@ -28,6 +28,7 @@ class GuestType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Lin\GuestbookBundle\Entity\Guest',
+            'csrf_protection' => false,
         ));
     }
 
